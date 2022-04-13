@@ -49,7 +49,7 @@ jobs:
         with:
           images: ${{github.event.inputs.service_name || env.service_name}}
           tags: |
-            type=semver
+            type=semver,pattern={{raw}}
             type=sha,format=long
       
       - name: Debug Meta
