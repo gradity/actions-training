@@ -48,6 +48,8 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: ${{github.event.inputs.service_name || env.service_name}}
+          tags: |
+            type=semver,pattern={{raw}}
       
       - name: Debug Meta
         run: echo "::notice title=docker-meta::${{steps.meta.outputs.tags}}"
