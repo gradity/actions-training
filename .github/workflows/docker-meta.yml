@@ -29,8 +29,7 @@ jobs:
       - name: debug service_name
         run: |
           service_name=${{github.event.inputs.service_name || env.service_name}}
-          echo "::debug::$service_name"
-          echo "::notice file=docker-meta.yml,line=30,endLine=31,title=fyi::$service_name"
+          echo "::debug title=input-service_name::$service_name"
       
   # This workflow contains a single job called "build"
   build:
@@ -53,7 +52,7 @@ jobs:
           images: ${{github.event.inputs.service_name || env.service_name}}
       
       - name: Debug Meta
-        run: echo "::notice title=docker-meta::${{steps.meta.outputs.tags}}"
+        run: echo "::notice title=docker-meta::${{steps.meta.outputs.tags[0]}}"
           
   use:
     runs-on: ubuntu-latest
