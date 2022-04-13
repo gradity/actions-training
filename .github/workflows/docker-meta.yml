@@ -49,7 +49,8 @@ jobs:
         with:
           images: ${{github.event.inputs.service_name || env.service_name}}
           tags: |
-            type=semver,pattern={{raw}}
+            type=semver
+            type=sha,format=long
       
       - name: Debug Meta
         run: echo "::notice title=docker-meta::${{steps.meta.outputs.tags}}"
