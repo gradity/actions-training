@@ -25,5 +25,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: repo name
-        run: ${{GITHUB_ACTION_REPOSITORY}}
-      
+        run: ${{ env.GITHUB_ACTION_REPOSITORY }}
