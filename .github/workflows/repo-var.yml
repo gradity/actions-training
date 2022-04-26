@@ -25,6 +25,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: repo name
-        run: echo ${{ GITHUB_ACTION_REPOSITORY }}
-      - name: repo name env
         run: echo ${{ github.event.repository.name }}
