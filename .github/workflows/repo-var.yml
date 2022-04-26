@@ -19,7 +19,7 @@ on:
 env:
   og_repo: ${{ github.event.repository.name }}
   input_repo: ${{ github.event.inputs.repo_name }}
-  REPO_NAME_SUBS: ${{ inputs.repo_name || github.event.repository.name  }}
+  REPO_NAME_SUBS: ${{ github.event.inputs.repo_name || github.event.repository.name  }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
