@@ -13,7 +13,7 @@ on:
     inputs:
       repo_name:
         required: false
-#         default: gradity.io/awesome-api
+        default: ${{ github.event.repository.name }}
 
 
 env:
