@@ -10,13 +10,13 @@ on:
       
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      service_name:
-        required: true
-        default: gradity.io/awesome-api
+#     inputs:
+#       service_name:
+#         required: true
+#         default: gradity.io/awesome-api
 
-env:
-  service_name: gradity.io/env-awesome-api
+# env:
+#   service_name: gradity.io/env-awesome-api
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,4 +25,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: repo name
+        run: echo ${{ GITHUB_ACTION_REPOSITORY }}
+      - name: repo name env
         run: echo ${{ env.GITHUB_ACTION_REPOSITORY }}
