@@ -27,4 +27,4 @@ jobs:
       - name: repo name
         run: echo ${{ GITHUB_ACTION_REPOSITORY }}
       - name: repo name env
-        run: echo ${{ env.GITHUB_ACTION_REPOSITORY }}
+        run: echo ${{ github.event.repository.name }}
