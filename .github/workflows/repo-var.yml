@@ -29,5 +29,7 @@ jobs:
     steps:
       - name: repo name from env
         run: echo ${{ env.og_repo }}
+      - name: input repo
+        run: echo ${{ github.event.repository.name  }}
       - name: substitute repo name
         run: echo ${{ env.REPO_NAME_SUBS }}
