@@ -14,11 +14,16 @@ jobs:
       imageTag: ${{ steps.checkbranch.outputs.resulttag }}
     
     steps:
-      - name: check branch
-        id: checkbranch
-        run: ${GITHUB_REF#refs/*/} == v*-prod && echo "::set-output name=resulttag::true"
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: regex-match
+        with:
+          text: ${GITHUB_REF#refs/*/}
+          regex: 'v*-prod'
+#       - name: check branch
+#         id: checkbranch
+#         run: ${GITHUB_REF#refs/*/} == v*-prod && echo "::set-output name=resulttag::true"
         
-      - run: (${GITHUB_REF#refs/*/} == v*-prod) && echo matched
+#       - run: (${GITHUB_REF#refs/*/} == v*-prod) && echo matched
   
   deploy-dev:
     needs: check
