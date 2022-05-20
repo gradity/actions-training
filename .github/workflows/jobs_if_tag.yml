@@ -23,7 +23,7 @@ jobs:
 #         id: checkbranch
 #         run: ${GITHUB_REF#refs/*/} == v*-prod && echo "::set-output name=resulttag::true"
         
-#       - run: (${GITHUB_REF#refs/*/} == v*-prod) && echo matched
+      - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
   
   deploy-dev:
     needs: check
