@@ -1,0 +1,36 @@
+name: Jobs If Tag
+
+on:
+  push:
+    tags:
+      - v*-dev
+      - v*-prod
+
+jobs:
+  check:
+    runs-on: [ubuntu-latest]
+    
+    outputs:
+      imageTag: ${{ steps.meta.outputs.resulttag }}
+    
+    steps:
+      - name: check branch
+        id: checkbranch
+        run: [[ ${GITHUB_REF#refs/*/} == v*-prod ]] && echo "::set-output name=resulttag::true"
+      - run: [[ ${GITHUB_REF#refs/*/} == v*-prod ]] && echo matched
+  
+  deploy-dev:
+    needs: check
+    if: ${{ needs.check.outputs.resulttag }}
+    runs-on: [ubuntu-latest]
+    steps:
+      - run: echo "::notice title=deploy dev::${GITHUB_REF#refs/*/}"
+  
+  
+  deploy-prod:
+    needs: check
+    if: ${{ needs.check.outputs.resulttag }}
+    runs-on: [ubuntu-latest]
+    steps:
+      - run: echo "::notice title=deploy prod::${GITHUB_REF#refs/*/}"
+  
