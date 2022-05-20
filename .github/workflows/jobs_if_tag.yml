@@ -11,13 +11,14 @@ jobs:
     runs-on: [ubuntu-latest]
     
     outputs:
-      imageTag: ${{ steps.meta.outputs.resulttag }}
+      imageTag: ${{ steps.checkbranch.outputs.resulttag }}
     
     steps:
       - name: check branch
         id: checkbranch
-        run: [[ ${GITHUB_REF#refs/*/} == v*-prod ]] && echo "::set-output name=resulttag::true"
-      - run: [[ ${GITHUB_REF#refs/*/} == v*-prod ]] && echo matched
+        run: ${GITHUB_REF#refs/*/} == v*-prod && echo "::set-output name=resulttag::true"
+        
+      - run: (${GITHUB_REF#refs/*/} == v*-prod) && echo matched
   
   deploy-dev:
     needs: check
