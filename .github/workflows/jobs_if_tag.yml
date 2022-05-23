@@ -14,15 +14,12 @@ jobs:
       imageTag: ${{ steps.checkbranch.outputs.resulttag }}
     
     steps:
-      - uses: actions-ecosystem/action-regex-match@v2
+      - uses: gradity/action-regex-match@v1.0.0
         id: regex-match
         with:
           text: ${GITHUB_REF#refs/*/}
-          regex: 'v*-prod'
-#       - name: check branch
-#         id: checkbranch
-#         run: ${GITHUB_REF#refs/*/} == v*-prod && echo "::set-output name=resulttag::true"
-        
+          regexExp: /(v.*-dev)/g
+
       - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
   
   deploy-dev:
