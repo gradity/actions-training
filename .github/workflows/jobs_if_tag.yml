@@ -30,6 +30,13 @@ jobs:
 
       - run: echo ${{steps.regex-match.outputs.match}}
       - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
+      
+  prod-test:
+    needs: check
+    if: true
+    runs-on: [ubuntu-latest]
+    steps:
+      - run: echo "::notice title=production test::executed test for ${GITHUB_REF#refs/*/}"
   
   deploy-dev:
     needs: check
@@ -40,7 +47,7 @@ jobs:
   
   
   deploy-prod:
-    needs: check
+    needs: [check, prod-test]
     if: endsWith(github.event.ref, 'prod')
     runs-on: [ubuntu-latest]
     steps:
