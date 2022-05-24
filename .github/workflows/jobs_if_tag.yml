@@ -18,7 +18,7 @@ jobs:
         id: regex-match
         with:
           text: ${GITHUB_REF#refs/*/}
-          regex: '/(v.*-dev)/'
+          regex: '(v.*-dev)'
 
       - run: echo ${{steps.regex-match.outputs}}
       - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
