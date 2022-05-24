@@ -40,13 +40,13 @@ jobs:
       
   prod-test:
     needs: check-branch
-    if: true
+    if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=production test::executed test for ${GITHUB_REF#refs/*/}"
   
   deploy-dev:
-    needs: check-branch
+    needs: check
     if: endsWith(github.event.ref, 'dev')
     runs-on: [ubuntu-latest]
     steps:
@@ -54,8 +54,8 @@ jobs:
   
   
   deploy-prod:
-    needs: [check, prod-test]
-    if: endsWith(github.event.ref, 'prod')
+    needs: [prod-test]
+    if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=deploy prod::${GITHUB_REF#refs/*/}"
