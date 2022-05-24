@@ -11,6 +11,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - run: echo ${GITHUB_REF#refs/*/}
+      - run: echo ${github.event.ref}
       
   check:
     runs-on: [ubuntu-latest]
@@ -33,7 +34,7 @@ jobs:
   
   deploy-dev:
     needs: check
-    if: ${{ needs.check.outputs.resulttag }}
+    if: startsWith(github.event.ref, 'refs/tags/v')
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=deploy dev::${GITHUB_REF#refs/*/}"
