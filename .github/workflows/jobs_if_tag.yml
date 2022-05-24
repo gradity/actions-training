@@ -14,11 +14,12 @@ jobs:
       imageTag: ${{ steps.checkbranch.outputs.resulttag }}
     
     steps:
-      - uses: gradity/action-regex-match@v1.0.0
+      - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
           text: ${GITHUB_REF#refs/*/}
-          regexExp: /(v.*-dev)/g
+          regex: /(v.*-dev)/
+          flags: g
 
       - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
   
