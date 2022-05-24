@@ -6,6 +6,9 @@ on:
       - v*-dev
       - v*-prod
 
+env:
+  BRANCH: ${GITHUB_REF#refs/*/}
+
 jobs:
   debug:
     runs-on: [ubuntu-latest]
@@ -22,7 +25,7 @@ jobs:
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: v0.0.1-dev
+          text: ${{ env.BRANCH }}
           regex: '(v.*-dev)'
 
       - run: echo ${{steps.regex-match.outputs.match}}
