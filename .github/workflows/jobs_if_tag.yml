@@ -12,6 +12,13 @@ jobs:
     steps:
       - run: echo ${GITHUB_REF#refs/*/}
       
+  check-branch:
+    if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
+    runs-on: [self-hosted]
+
+    steps:
+      - run: echo "::error title=Invalid branch::Branch is not production"
+      
   check:
     runs-on: [ubuntu-latest]
     
