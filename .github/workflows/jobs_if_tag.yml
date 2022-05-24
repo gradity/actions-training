@@ -25,7 +25,7 @@ jobs:
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${{ env.BRANCH }}
+          text: "${{ env.BRANCH }}"
           regex: '(v.*-dev)'
 
       - run: echo ${{steps.regex-match.outputs.match}}
