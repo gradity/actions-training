@@ -7,6 +7,11 @@ on:
       - v*-prod
 
 jobs:
+  debug:
+    runs-on: [ubuntu-latest]
+    steps:
+      - run: echo ${GITHUB_REF#refs/*/}
+      
   check:
     runs-on: [ubuntu-latest]
     
