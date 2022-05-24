@@ -5,10 +5,7 @@ on:
     tags:
       - v*-dev
       - v*-prod
-
-env:
-  BRANCH: ${GITHUB_REF#refs/*/}
-
+      
 jobs:
   debug:
     runs-on: [ubuntu-latest]
@@ -22,10 +19,13 @@ jobs:
       imageTag: ${{ steps.checkbranch.outputs.resulttag }}
     
     steps:
+      - id: set
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/*/}" 
+        
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: "${{ env.BRANCH }}"
+          text: ${{ steps.set.outputs.branch}}
           regex: '(v.*-dev)'
 
       - run: echo ${{steps.regex-match.outputs.match}}
