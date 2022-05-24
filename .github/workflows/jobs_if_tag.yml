@@ -17,10 +17,10 @@ jobs:
       - uses: actions-ecosystem/action-regex-match@v2
         id: regex-match
         with:
-          text: ${GITHUB_REF#refs/*/}
+          text: v0.0.1-dev
           regex: '(v.*-dev)'
 
-      - run: echo ${{steps.regex-match.outputs}}
+      - run: echo ${{steps.regex-match.outputs.match}}
       - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
   
   deploy-dev:
