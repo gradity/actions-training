@@ -14,7 +14,7 @@ jobs:
       
   check-branch:
     if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
-    runs-on: [self-hosted]
+    runs-on: [ubuntu-latest]
 
     steps:
       - run: echo "::error title=Invalid branch::Branch is not production"
@@ -39,14 +39,14 @@ jobs:
       - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
       
   prod-test:
-    needs: check
+    needs: check-branch
     if: true
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=production test::executed test for ${GITHUB_REF#refs/*/}"
   
   deploy-dev:
-    needs: check
+    needs: check-branch
     if: endsWith(github.event.ref, 'dev')
     runs-on: [ubuntu-latest]
     steps:
