@@ -34,7 +34,7 @@ jobs:
   
   deploy-dev:
     needs: check
-    if: startsWith(github.event.ref, 'refs/tags/v')
+    if: startsWith(github.event.ref, 'refs/tags/v*-dev')
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=deploy dev::${GITHUB_REF#refs/*/}"
@@ -42,7 +42,7 @@ jobs:
   
   deploy-prod:
     needs: check
-    if: ${{ needs.check.outputs.resulttag }}
+    if: startsWith(github.event.ref, 'refs/tags/v*-prod')
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=deploy prod::${GITHUB_REF#refs/*/}"
