@@ -11,7 +11,6 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - run: echo ${GITHUB_REF#refs/*/}
-      - run: echo ${github.event.ref}
       
   check:
     runs-on: [ubuntu-latest]
