@@ -55,7 +55,7 @@ jobs:
       - run: echo "::notice title=production test::executed test for ${GITHUB_REF#refs/*/}"
   
   deploy-dev:
-    needs: check
+    needs: check-branch
     if: endsWith(github.event.ref, 'dev')
     runs-on: [ubuntu-latest]
     steps:
