@@ -57,8 +57,8 @@ jobs:
       
   prod-test:
     needs: check-branch
-#     if: (github.event.base_ref == 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
-    if: needs.check-branch.outputs.allowProduction == true
+    if: (github.event.base_ref == 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
+#     if: needs.check-branch.outputs.allowProduction == true
     runs-on: [ubuntu-latest]
     steps:
       - run: echo ${{needs.check-branch.outputs.allowProduction}}
@@ -66,7 +66,7 @@ jobs:
   
   deploy-dev:
     needs: check-branch
-    if: (needs.check-branch.outputs.allowProduction == false) && (endsWith(github.event.ref, 'dev'))
+    if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'dev'))
     runs-on: [ubuntu-latest]
     steps:
       - run: echo ${{needs.check-branch.outputs.allowProduction}}
@@ -75,7 +75,7 @@ jobs:
   
   deploy-prod:
     needs: [prod-test]
-    if: needs.check-branch.outputs.allowProduction == true
+    if: (github.event.base_ref == 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
     runs-on: [ubuntu-latest]
     steps:
       - run: echo ${{needs.check-branch.outputs.allowProduction}}
