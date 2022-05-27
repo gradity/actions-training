@@ -13,30 +13,39 @@ jobs:
       - run: echo ${GITHUB_REF#refs/*/}
       
   check-branch:
-    if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
+#     if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
     runs-on: [ubuntu-latest]
 
     steps:
-      - run: echo "::error title=Invalid branch::Branch is not production"
+      - name: allow production
+        run: |
+          if [[${{github.event.base_ref == 'refs/heads/production'}}]] && [[${{endsWith(github.event.ref, 'prod')}}]]
+          then
+            echo "::notice title=Allowed branch::Branch is production"
+          else
+            echo "::error title=Invalid branch::Branch is not production"
+          fi
+
+#       - run: echo "::error title=Invalid branch::Branch is not production"
       
-  check:
-    runs-on: [ubuntu-latest]
+#   check:
+#     runs-on: [ubuntu-latest]
     
-    outputs:
-      imageTag: ${{ steps.checkbranch.outputs.resulttag }}
+#     outputs:
+#       imageTag: ${{ steps.checkbranch.outputs.resulttag }}
     
-    steps:
-      - id: set
-        run: echo "::set-output name=branch::${GITHUB_REF#refs/*/}" 
+#     steps:
+#       - id: set
+#         run: echo "::set-output name=branch::${GITHUB_REF#refs/*/}" 
         
-      - uses: actions-ecosystem/action-regex-match@v2
-        id: regex-match
-        with:
-          text: ${{ steps.set.outputs.branch}}
-          regex: '(v.*-dev)'
+#       - uses: actions-ecosystem/action-regex-match@v2
+#         id: regex-match
+#         with:
+#           text: ${{ steps.set.outputs.branch}}
+#           regex: '(v.*-dev)'
 
-      - run: echo ${{steps.regex-match.outputs.match}}
-      - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
+#       - run: echo ${{steps.regex-match.outputs.match}}
+#       - run: echo "::notice title=regex match::${{ steps.regex-match.outputs.match }}"
       
   prod-test:
     needs: check-branch
