@@ -15,17 +15,25 @@ jobs:
   check-branch:
 #     if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
     runs-on: [ubuntu-latest]
-
+    
+    outputs:
+      allowProduction: ${{ steps.allowProductionCheck.outputs.check }}
+      
     steps:
       - name: allow production
+        id: allowProductionCheck
         run: |
           if [[${{github.event.base_ref == 'refs/heads/production'}}]] && [[${{endsWith(github.event.ref, 'prod')}}]]
           then
+            echo "::set-output name=check::true" 
             echo "::notice title=Allowed branch::Branch is production"
           else
-            echo "::error title=Invalid branch::Branch is not production"
+            echo "::set-output name=check::false" 
+            echo "::error title=Invalid branch::Branch is not production or invalid tag for production"
           fi
-
+        
+      - run: echo ${{ steps.allowProductionCheck.outputs.check }}
+        
 #       - run: echo "::error title=Invalid branch::Branch is not production"
       
 #   check:
@@ -49,14 +57,15 @@ jobs:
       
   prod-test:
     needs: check-branch
-    if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
+#     if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
+    if: needs.check-branch.outputs.allowProduction
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=production test::executed test for ${GITHUB_REF#refs/*/}"
   
   deploy-dev:
     needs: check-branch
-    if: endsWith(github.event.ref, 'dev')
+    if: (!needs.check-branch.outputs.allowProduction) && (endsWith(github.event.ref, 'dev'))
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=deploy dev::${GITHUB_REF#refs/*/}"
@@ -64,7 +73,7 @@ jobs:
   
   deploy-prod:
     needs: [prod-test]
-    if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
+    if: needs.check-branch.outputs.allowProduction
     runs-on: [ubuntu-latest]
     steps:
       - run: echo "::notice title=deploy prod::${GITHUB_REF#refs/*/}"
