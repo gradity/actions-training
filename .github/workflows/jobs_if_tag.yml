@@ -13,7 +13,6 @@ jobs:
       - run: echo ${GITHUB_REF#refs/*/}
       
   check-branch:
-#     if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
     runs-on: [ubuntu-latest]
     
     outputs:
