@@ -29,7 +29,7 @@ jobs:
             echo "::notice title=Allowed branch::Branch is production"
           else
             echo "::set-output name=check::false" 
-            echo "::error title=Invalid branch::Branch is not production or invalid tag for production"
+            echo "::notice title=Invalid branch::Branch is not production or invalid tag for production"
           fi
         
       - run: echo ${{ steps.allowProductionCheck.outputs.check }}
@@ -57,10 +57,11 @@ jobs:
       
   prod-test:
     needs: check-branch
-#     if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
-    if: needs.check-branch.outputs.allowProduction
+#     if: (github.event.base_ref == 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
+    if: needs.check-branch.outputs.allowProduction == true
     runs-on: [ubuntu-latest]
     steps:
+      - run: echo ${{needs.check-branch.outputs.allowProduction}}
       - run: echo "::notice title=production test::executed test for ${GITHUB_REF#refs/*/}"
   
   deploy-dev:
@@ -68,13 +69,15 @@ jobs:
     if: (!needs.check-branch.outputs.allowProduction) && (endsWith(github.event.ref, 'dev'))
     runs-on: [ubuntu-latest]
     steps:
+      - run: echo ${{needs.check-branch.outputs.allowProduction}}
       - run: echo "::notice title=deploy dev::${GITHUB_REF#refs/*/}"
   
   
   deploy-prod:
     needs: [prod-test]
-    if: needs.check-branch.outputs.allowProduction
+    if: needs.check-branch.outputs.allowProduction == true
     runs-on: [ubuntu-latest]
     steps:
+      - run: echo ${{needs.check-branch.outputs.allowProduction}}
       - run: echo "::notice title=deploy prod::${GITHUB_REF#refs/*/}"
   
