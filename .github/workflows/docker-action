@@ -1,0 +1,16 @@
+name: docker action
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: gradity/go-github-action@v1.2
+      id: custom-action
+      with:
+        whogreet: guvnor
+
+    - name: get output from custom action
+      runs: echo "YOUR MESSAGE IS ${{ steps.custom-action.outputs.message }}"
