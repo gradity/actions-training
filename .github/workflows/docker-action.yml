@@ -13,4 +13,4 @@ jobs:
         whogreet: guvnor
 
     - name: get output from custom action
-      runs: echo "YOUR MESSAGE IS ${{ steps.custom-action.outputs.message }}"
+      run: echo "YOUR MESSAGE IS ${{ steps.custom-action.outputs.message }}"
