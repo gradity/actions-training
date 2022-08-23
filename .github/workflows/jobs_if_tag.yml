@@ -11,6 +11,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - run: echo ${GITHUB_REF#refs/*/}
+      - run: echo ${{ github.event.release.tag_name }}
       
   check-branch:
 #     if: (github.event.base_ref != 'refs/heads/production') && (endsWith(github.event.ref, 'prod'))
