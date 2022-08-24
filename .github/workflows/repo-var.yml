@@ -27,6 +27,12 @@ jobs:
   debug:
     runs-on: ubuntu-latest
     steps:
+      - name: github url
+        run: echo ${{github.server.url}}/${{github.repository}}
+      - name: github url part 2
+        run: echo ${{GITHUB_SERVER_URL}}/${{github.repository}}
+      - name: github url part 3
+        run: echo ${GITHUB_SERVER_URL}/${{github.repository}}
       - name: repo name from env
         run: echo ${{ env.og_repo }}
       - name: input repo
