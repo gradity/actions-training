@@ -10,16 +10,16 @@ on:
       
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-    inputs:
-      repo_name:
-        required: false
-        default: ${{ github.event.repository.name }}
+#     inputs:
+#       repo_name:
+#         required: false
+#         default: ${{ github.event.repository.name }}
 
 
-env:
-  og_repo: ${{ github.event.repository.name }}
-  input_repo: ${{ github.event.inputs.repo_name }}
-  REPO_NAME_SUBS: ${{ github.event.inputs.repo_name || github.event.repository.name  }}
+# env:
+#   og_repo: ${{ github.event.repository.name }}
+#   input_repo: ${{ github.event.inputs.repo_name }}
+#   REPO_NAME_SUBS: ${{ github.event.inputs.repo_name || github.event.repository.name  }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,9 +33,9 @@ jobs:
         run: echo ${{GITHUB_SERVER_URL}}/${{github.repository}}
       - name: github url part 3
         run: echo ${GITHUB_SERVER_URL}/${{github.repository}}
-      - name: repo name from env
-        run: echo ${{ env.og_repo }}
-      - name: input repo
-        run: echo ${{ github.event.inputs.repo_name }}
-      - name: substitute repo name
-        run: echo ${{ env.REPO_NAME_SUBS }}
+#       - name: repo name from env
+#         run: echo ${{ env.og_repo }}
+#       - name: input repo
+#         run: echo ${{ github.event.inputs.repo_name }}
+#       - name: substitute repo name
+#         run: echo ${{ env.REPO_NAME_SUBS }}
