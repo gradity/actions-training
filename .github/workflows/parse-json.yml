@@ -1,13 +1,12 @@
-name: Mantichor Setup
+name: Initial Setup for v1.4.0
 on: workflow_dispatch
 
 jobs:
   setup:
     runs-on: self-hosted
-		outputs:
+    outputs:
       manifest: ${{ steps.mantichor-agent.outputs.manifest }}
     steps:
-		
       - name: Set output
         id: vars
         run: echo ::set-output name=repourl::${GITHUB_SERVER_URL}/${{github.repository}}
@@ -22,9 +21,10 @@ jobs:
           service_name: ${{github.event.repository.name}}
           repository_name: ${{github.repository}}
           repository_url: ${{ steps.vars.outputs.repourl }}
+
   fetch:
-     runs-on: ubuntu-latest
-		 needs: setup
-     steps:
-      - id: setJSON
-        run: echo "::set-output name=baseImageJSON::${{ needs.setup.outputs.manifest }}"
+      runs-on: ubuntu-latest
+      needs: setup
+      steps:
+        - id: setJSON
+          run: echo "::set-output name=baseImageJSON::${{ needs.setup.outputs.manifest }}"
